@@ -3,29 +3,24 @@ package nQueens
 //Count will take a board matrix and return a solution count
 func Count(n int) int {
 	solutionCount := 0
-	done := make(chan bool)
+	doneCh := make(chan bool)
+	countCh := make(chan int)
 	for i := 0; i < n; i++ {
-		go pathSupervisor(makeBoardWithPiece(n, i), 1, makeColsWithPiece(n, i), &solutionCount, done)
+		go pathSupervisor(makeBoardWithPiece(n, i), 1, makeColsWithPiece(n, i), doneCh, countCh)
 	}
 	for n > 0 {
-		<-done
-		n--
+		select {
+		case _ = <-countCh:
+			solutionCount++
+		case _ = <-doneCh:
+			n--
+		}
 	}
 
 	return solutionCount
 }
 
-// makeBoard constructs an emptry NxN matrix
-func makeBoard(n int) (board [][]int) {
-	board = make([][]int, n)
-	for i := 0; i < n; i++ {
-		board[i] = make([]int, n)
-	}
-
-	return
-}
-
-// makeBoard constructs an emptry NxN matrix
+// makeBoard constructs an NxN matrix with 1 piece in row 0
 func makeBoardWithPiece(n int, first int) (board [][]int) {
 	board = make([][]int, n)
 	for i := 0; i < n; i++ {
@@ -78,21 +73,21 @@ func filterCols(cols []int, col int) (newCols []int) {
 	return
 }
 
-func pathSupervisor(board [][]int, row int, cols []int, count *int, done chan bool) {
-	search(board, row, cols, count)
-	done <- true
+func pathSupervisor(board [][]int, row int, cols []int, doneCh chan bool, countCh chan int) {
+	search(board, row, cols, countCh)
+	doneCh <- true
 }
 
-func search(board [][]int, row int, cols []int, count *int) {
+func search(board [][]int, row int, cols []int, countCh chan int) {
 	if len(cols) == 0 {
-		*count++
+		countCh <- 1
 		return
 	}
 
 	for _, col := range cols {
 		if !hasMajorDiagonalConflitctAt(board, row, col) && !hasMinorDiagonalConflictAt(board, row, col) {
 			board[row][col] = 1
-			search(board, row+1, filterCols(cols, col), count)
+			search(board, row+1, filterCols(cols, col), countCh)
 			board[row][col] = 0
 		}
 	}
