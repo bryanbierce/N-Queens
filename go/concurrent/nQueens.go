@@ -40,6 +40,18 @@ func makeColsWithPiece(n int, first int) (cols []int) {
 	return
 }
 
+func copyBoard(oldBoard [][]int) (newBoard [][]int) {
+	length := len(oldBoard)
+	newBoard = make([][]int, length)
+	for i := 0; i < length; i++ {
+		newBoard[i] = make([]int, length)
+		for j := 0; j < length; j++ {
+			newBoard[i][j] = oldBoard[i][j]
+		}
+	}
+	return
+}
+
 func hasMajorDiagonalConflitctAt(board [][]int, row, col int) bool {
 	for row >= 0 && col >= 0 {
 		if board[row][col] != 0 {
@@ -86,9 +98,9 @@ func search(board [][]int, row int, cols []int, countCh chan int) {
 
 	for _, col := range cols {
 		if !hasMajorDiagonalConflitctAt(board, row, col) && !hasMinorDiagonalConflictAt(board, row, col) {
-			board[row][col] = 1
-			search(board, row+1, filterCols(cols, col), countCh)
-			board[row][col] = 0
+			newBoard := copyBoard(board)
+			newBoard[row][col] = 1
+			search(newBoard, row+1, filterCols(cols, col), countCh)
 		}
 	}
 

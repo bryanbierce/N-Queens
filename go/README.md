@@ -27,3 +27,12 @@ The concurrency section of the go tour is incredibly brief and easy to get throu
 
 ##### Testing Source of Slow Down
 * adding the copyBoard into the partially concurrent solution to measure the magnitude of speed decrease
+  * Previous speed on n=12 was 107ms; w/ board copied before each call speed is 601ms.
+    * Major relative speed decrease, not on the magnitude of the 2+ seconds it takes with allConcurrent solution.
+
+* Conclusion: significant speed impact created by preventing mutations through board copy on each call
+  * 6x increase in run time for copying board
+  * from that time it is another 3-4x increase in run time to reach the 2+ seconds that the allConcurrent solution yielded
+  * Both high quantity of routines and the load of duplicating the data are significant in their effects.
+    * allConcurrent solution is not possible without each call having independent data.
+    * Solution is not viable
