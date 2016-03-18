@@ -16,3 +16,14 @@ The concurrency section of the go tour is incredibly brief and easy to get throu
 ##### First Refactor
 * Replaced the solutionCount pointer with a count channel. Race condition eliminated since the channel send blocks until it can be received the current func does not return up the chain to the top and send the done channel message until the count message is first received.
 * solution is now 107ms at n = 12 but solution is deterministic
+
+##### Second Refactor (Currently unsuccessful, on 'go/allConcurrent' branch)
+* All recursive calls changed to go routines. Done channel changed to increment the go-routine counter on each routine open, and close on each close
+* Very interesting results, I suspect I might have a bug somewhere. It now completes n =12 in 9ms, so under 10% the time of previous solution. however at n = 14 it seems to explode. being that the previous did it in something udner 20s I gave up waiting at a little over 2 mins.
+  * First possibility: I have a bug. Probability: reasonably high.
+  * Second possibility: The garabage collectors is being asked to do an obscene amount of work and might be hanging the processes? To be able to make each recursive call a go routine each call has to have its own copy of the board just like it does the column array. This board is then thrown away at the end of each go routine. That becomes a pretty big pile of trash, not to mention the O(n^2) boardCopy(board)
+* Attempted to have it run the recursive steps on every other row as go routines. But this seemed to create a race condition and it was finishing with at best 20 out of some 2000 expected results on n = 11
+
+
+##### Testing Source of Slow Down
+* adding the copyBoard into the partially concurrent solution to measure the magnitude of speed decrease
