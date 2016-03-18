@@ -95,9 +95,10 @@ func search(board [][]int, row int, cols []int, routineCh, solutionCh chan int) 
 	} else {
 		for _, col := range cols {
 			if !hasMajorDiagonalConflitctAt(board, row, col) && !hasMinorDiagonalConflictAt(board, row, col) {
-				board[row][col] = 1
+				newBoard := copyBoard(board)
+				newBoard[row][col] = 1
 				routineCh <- 1
-				go search(copyBoard(board), row+1, filterCols(cols, col), routineCh, solutionCh)
+				go search(newBoard, row+1, filterCols(cols, col), routineCh, solutionCh)
 				board[row][col] = 0
 			}
 		}
