@@ -10,17 +10,17 @@ function recurse(board, cols, row){
   }else{
     for(var i = 0; i < cols.length; i++){
       var col = cols[i];
-      board[row][col] = !board[row][col];
       if(!hasMajorDiagonalConflictAt(board, col, row) && !hasMinorDiagonalConflictAt(board, col, row)){
+        board[row][col] = !board[row][col];
         recurse(board, cols.filter(function(item, index){ return index !== i;}), row+1);
+        board[row][col] = !board[row][col];
       }
-      board[row][col] = !board[row][col];
     }
   }
 };
 
 function hasMinorDiagonalConflictAt(board, colIndex, rowIndex) {
-  var n = board[0].length;
+  var n = board.length;
   while(++colIndex < n && --rowIndex >= 0) {
     if(board[rowIndex][colIndex]) return true;
   }
@@ -29,7 +29,7 @@ function hasMinorDiagonalConflictAt(board, colIndex, rowIndex) {
 }
 
 function hasMajorDiagonalConflictAt(board, colIndex, rowIndex) {
-  var n = board[0].length;
+  var n = board.length;
   while(--colIndex >= 0 && --rowIndex >= 0) {
     if(board[rowIndex][colIndex]) return true;
   }

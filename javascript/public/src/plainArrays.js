@@ -1,20 +1,20 @@
 
 function plainCountNQueens(board, cols, row, count){
-  cols = cols || makeColsArray(board[0].length);
+  cols = cols || makeColsArray(board.length);
   row = row || 0;
   count = count || 0;
 
   if(cols.length === 0) {
     return ++count;
-  }else{
-    for(let i = 0; i < cols.length; i++) {
-      let col = cols[i];
-      board[row][col] = !board[row][col];
+  } else {
+    for(var i = 0; i < cols.length; i++) {
+      var col = cols[i];
       if(!hasMajorDiagonalConflictAt(board, col, row) && !hasMinorDiagonalConflictAt(board, col, row)) {
-        let cols = cols.filter((item, index) => index !== i);
-        count = plainCountNQueens(board, cols, row+1, count);
+        var newCols = cols.filter(function(item, index) { return index !== i});
+        board[row][col] = !board[row][col];
+        count = plainCountNQueens(board, newCols, row+1, count);
+        board[row][col] = !board[row][col];
       }
-      board[row][col] = !board[row][col];
     }
   }
   return count;
@@ -29,7 +29,7 @@ function makeColsArray(n) {
 };
 
 function hasMinorDiagonalConflictAt(board, colIndex, rowIndex) {
-  var n = board[0].length;
+  var n = board.length;
   while(++colIndex < n && --rowIndex >= 0) {
     if(board[rowIndex][colIndex]) return true;
   }
@@ -38,7 +38,6 @@ function hasMinorDiagonalConflictAt(board, colIndex, rowIndex) {
 }
 
 function hasMajorDiagonalConflictAt(board, colIndex, rowIndex) {
-  var n = board[0].length;
   while(--colIndex >= 0 && --rowIndex >= 0) {
     if(board[rowIndex][colIndex]) return true;
   }

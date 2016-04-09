@@ -1,0 +1,23 @@
+{
+  "name": "2015-11-n-queens-bryan-auggie",
+  "version": "0.0.1",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bryanbierce/2015-11-n-queens.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bryanbierce/2015-11-n-queens/issues"
+  },
+  "homepage": "https://github.com/bryanbierce/2015-11-n-queens#readme",
+  "dependencies": {
+    "express": "^4.13.4"
+  }
+}

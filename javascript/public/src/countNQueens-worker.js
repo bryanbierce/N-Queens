@@ -1,4 +1,4 @@
-// polyfill from https://github.com/dmihal/Subworkers  
+// polyfill from https://github.com/dmihal/Subworkers
 importScripts('subworkers.js');
 
 var solutionCount = 0;
@@ -29,25 +29,6 @@ function startSubRoutines(n){
   }
 }
 
-function makeColsArray(n) {
-  var arr = [];
-  for(var i = 0; i < n; i++) {
-    arr.push(i);
-  }
-  return arr;
-};
-
-function makeEmptyMatrix(n) {
-  var matrix = [];
-  for(var i = 0; i < n; i++){
-    var row = [];
-    for(var j = 0; j < n; j++){
-      row[j] = false;
-    }
-    matrix[i] = row;
-  }
-  return matrix;
-};
 
 function receiveMessage(e) {
   switch(e.data.type) {
@@ -61,7 +42,6 @@ function receiveMessage(e) {
       console.log('I didn\'t prepare for ', data.type);
   }
 }
-
 
 function countSolution() {
   solutionCount++;
@@ -83,3 +63,23 @@ function checkStable() {
     return memo;
   }, true);
 }
+
+function makeColsArray(n) {
+  var arr = [];
+  for(var i = 0; i < n; i++) {
+    arr.push(i);
+  }
+  return arr;
+};
+
+function makeEmptyMatrix(n) {
+  var matrix = [];
+  for(var i = 0; i < n; i++){
+    var row = [];
+    for(var j = 0; j < n; j++){
+      row[j] = false;
+    }
+    matrix[i] = row;
+  }
+  return matrix;
+};

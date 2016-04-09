@@ -64,13 +64,14 @@ func hasMinorDiagonalConflictAt(board [][]int, row, col int) bool {
 	return false
 }
 
-func filterCols(cols []int, col int) (newCols []int) {
-	for _, v := range cols {
+func filterCols(cols []int, col int) []int {
+	newCols := make([]int, len(cols)-1)
+	for i, v := range cols {
 		if v != col {
-			newCols = append(newCols, v)
+			newCols[i] = v
 		}
 	}
-	return
+	return newCols
 }
 
 func pathSupervisor(board [][]int, row int, cols []int, doneCh chan bool, countCh chan int) {
