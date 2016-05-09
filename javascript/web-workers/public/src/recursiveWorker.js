@@ -29,7 +29,6 @@ function hasMinorDiagonalConflictAt(board, colIndex, rowIndex) {
 }
 
 function hasMajorDiagonalConflictAt(board, colIndex, rowIndex) {
-  var n = board.length;
   while(--colIndex >= 0 && --rowIndex >= 0) {
     if(board[rowIndex][colIndex]) return true;
   }
